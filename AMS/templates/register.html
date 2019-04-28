@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" class="form">
+   <form method="post" class="form">
+    <h3 class="form-heading">Register <a href="{{ url_for('core.index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+ <!--    {{ form.email.label (class_ = 'form-control first-input', placeholder = form.email.label.text, required = true, autofocus = true) }}
+    {{ form.email() }}<br>
+    {{ form.username.label (class_ = 'form-control first-input', placeholder = form.username.label.text, required = true, autofocus = true)}} {{ form.username() }}<br>
+    {{ form.password.label (class_ = 'form-control first-input', placeholder = form.password.label.text, required = true, autofocus = true)}} {{ form.password() }}<br>
+    {{ form.pass_confirm.label }} {{ form.pass_confirm() }}<br>
+    {{ form.submit() }} -->
+    {{ form.username(class_ = 'form-control first-input', placeholder = form.username.label.text, required = true, autofocus = true) }}
+    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required = true) }}
+    {{ form.password(class_ = 'form-control', placeholder = form.password.label.text, required = true) }}
+    {{ form.pass_confirm (class_ = 'form-control last-input', placeholder = form.pass_confirm.label.text, required = true) }}
+    <p class="pull-left"><a href="{{ url_for('users.login') }}">Login</a></p>
+    <input type="submit" value="register" class="btn btn-primary btn-lg btn-block"  >
+
+  </form>
+</form>
+{% endblock %}

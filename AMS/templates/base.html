@@ -1,0 +1,110 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<title>AMS: Apartment Management System</title>
+
+<!-- meta -->
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- /meta -->
+
+<!-- styles -->
+
+<!-- /scripts -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <div class="container">
+    <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <a class="navbar-brand" href="/">Community Center</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    {% if current_user.is_authenticated %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('core.index') }}">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+
+    <li class="nav-item"  ><a class="nav-link"href="{{ url_for('users.account') }}">Account</a></li>
+    <li class="nav-item" ><a class="nav-link"  href="{{ url_for('workorder_posts.create_post') }}">Create WorkOrder</a></li>
+
+    <li class="nav-item"  ><a class="nav-link" href="{{ url_for('workorder_posts.create_post') }}">Pay Maintenance</a></li>
+    <li></li>
+    <li class="nav-item"  ><a class="nav-link" href="{{ url_for('users.logout') }}">Log Out</a></li>
+
+    {% endif %}
+</ul>
+    {% if not current_user.is_authenticated %}
+        <ul class="navbar-nav  my-2 my-lg-0">
+            <li class="nav-item active "  ><a class="nav-link"  href="{{ url_for('users.register') }}">Signup</a></li>
+
+            <li class="nav-item active"  ><a class="nav-link"  href="{{ url_for('users.login') }}">Login</a></li>
+          </ul>
+        {% endif %}
+
+  </div><!--/.nav-collapse -->
+</nav>
+</div>
+</div>
+
+
+    <!-- Begin page content -->
+    <main id="content" role="main" class="container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-block alert-error fade in">
+              <a class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+
+    </main>
+
+
+
+  <div id="footer">
+    <div class="container">
+      <p>Pavan Tiwari &copy; All Rights Reserved.</p>
+      {% block footer %}{% endblock %}
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
+  <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
+  <script type="text/javascript" src="/static/js/plugins.js" defer></script>
+  <script type="text/javascript" src="/static/js/script.js" defer></script>
+  <!-- Google Analytics - Change UA-XXXXX-X to be your site's ID -->
+  <script>
+  window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
+  Modernizr.load({
+    load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+  });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
