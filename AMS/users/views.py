@@ -5,9 +5,14 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from AMS.models import User, workorderPost
 from AMS.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 from AMS.users.picture_handler import add_profile_pic
+import stripe
 
 
 users = Blueprint('users', __name__)
+
+public_key = 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
+
+stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -96,3 +101,25 @@ def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
     workorder_posts = workorderPost.query.filter_by(author=user).order_by(workorderPost.date.desc()).paginate(page=page, per_page=5)
     return render_template('workorder.html.html', workorder_posts=workorder_posts, user=user)
+
+@users.route('/payment', methods=[ 'GET'])
+@login_required
+def payment():
+    return render_template('payment.html', public_key=public_key)
+
+@users.route('/payment1', methods=[ 'POST' ])
+@login_required
+def payment1():
+    # CUSTOMER INFORMATION
+    customer = stripe.Customer.create(email=request.payment.form['stripeEmail'],
+                                      source=request.payment.form['stripeToken'])
+
+    # CHARGE/PAYMENT INFORMATION
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=5000,
+        currency='INR',
+        description='Monthly Maintenance'
+    )
+
+    return redirect(url_for('core.index'))
