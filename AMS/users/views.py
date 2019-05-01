@@ -2,7 +2,8 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from AMS import db
 from werkzeug.security import generate_password_hash,check_password_hash
-from AMS.models import User, workorderPost
+from AMS.models import User, workorderPost, Role
+from AMS import UserAdmin, RoleAdmin
 from AMS.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 from AMS.users.picture_handler import add_profile_pic
 import stripe
@@ -14,6 +15,10 @@ public_key = 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
 
 stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
 
+from AMS import admin
+from flask_admin.contrib.sqla import ModelView
+#admin.add_view(ModelView(User, db.session))
+
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -21,7 +26,8 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
-                    password=form.password.data)
+                    password_hash = generate_password_hash(form.password.data),
+                    active = True)
 
         db.session.add(user)
         db.session.commit()
@@ -123,3 +129,8 @@ def payment1():
     )
 
     return redirect(url_for('core.index'))
+
+################
+# Add Flask-Admin views for Users and Roles
+admin.add_view(UserAdmin(User, db.session))
+admin.add_view(RoleAdmin(Role, db.session))
